@@ -1,24 +1,18 @@
 # ©️biisal jai shree krishna 😎
 import asyncio
-from io import BytesIO
-from operator import is_
-import os
-import tempfile
-import base64
 import random
 from pyrogram import filters
 from pyrogram.client import Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton 
-import httpx
 from pyrogram.errors import FloodWait
-from info import * 
+from info import *
+from plugins.utils import create_image, get_ai_response 
 from .db import *
 from .fsub import get_fsub
 
-cl = httpx.AsyncClient(base_url="https://core.avisek.online" , timeout=20) 
 
 @Client.on_message(filters.command("start") & filters.incoming) # type:ignore
-async def startcmd(client, message):
+async def startcmd(client: Client, message: Message):
     userMention = message.from_user.mention()
     if await users.get_user(message.from_user.id) is None:
         await users.addUser(message.from_user.id, message.from_user.first_name)
@@ -27,16 +21,16 @@ async def startcmd(client, message):
             text=f"#New_user_started\n\nUser: {message.from_user.mention()}\nid :{message.from_user.id}",
         )
     if FSUB and not await get_fsub(client, message):return
-    await message.reply_photo(
+    await message.reply_photo(# type:ignore
         photo="https://telegra.ph/file/595e38a4d76848c01b110.jpg",
         caption=f"<b>Jai Shree Krishna {userMention},\n\nIᴍ Hᴇʀᴇ Tᴏ Rᴇᴅᴜᴄᴇ Yᴏᴜʀ Pʀᴏʙʟᴇᴍs..\nYᴏᴜ Cᴀɴ Usᴇ Mᴇ As ʏᴏᴜʀ Pʀɪᴠᴀᴛᴇ Assɪsᴛᴀɴᴛ..\nAsᴋ Mᴇ Aɴʏᴛʜɪɴɢ...Dɪʀᴇᴄᴛʟʏ..\n\nMʏ Cʀᴇᴀᴛᴏʀ : <a href=https://t.me/biisal>Bɪɪsᴀʟ</a>\nMʏ Lᴏᴠᴇʀ : <a href=tg://settings/>Tʜɪs Pᴇʀsᴏɴ</a></b>",
-    )
+    ) 
     return
 
 
 @Client.on_message(filters.command("broadcast") & (filters.private) & filters.user(ADMIN)) # type:ignore
-async def broadcasting_func(client, message):
-    msg = await message.reply_text("Wait a second!")
+async def broadcasting_func(client : Client, message: Message):
+    msg = await message.reply_text("Wait a second!") # type:ignore
     if not message.reply_to_message:
         return await msg.edit("<b>Please reply to a message to broadcast.</b>")
     await msg.edit("Processing ...")
@@ -62,10 +56,8 @@ async def broadcasting_func(client, message):
             print("Error in broadcasting:", e) 
             failed += 1
             pass
-    await msg.edit(f"Successfully Broadcasted\nTotal : {i} \nCompleted : {completed} \nFailed : {failed}")
+    await msg.edit(f"Successfully Broadcasted\nTotal : {len(users_list)} \nCompleted : {completed} \nFailed : {failed}")
     
-
-
 
 @Client.on_message(filters.command("ai") & filters.chat(CHAT_GROUP)) # type:ignore
 async def grp_ai(client: Client, message: Message):
@@ -73,7 +65,7 @@ async def grp_ai(client: Client, message: Message):
         message.text.split(" ", 1)[1] if len(message.text.split(" ", 1)) > 1 else None
     )
     if not query:
-        return await message.reply_text(
+        return await message.reply_text( # type:ignore
             "<b>Abe gadhe /ai k baad kuch likh to le !!.\n\nExample Use:\n<code>/ai Who is lord krshna??</code>\n\nHope you got it.Try it now..</b>"
         )
     if FSUB and not await get_fsub(client, message):return
@@ -88,59 +80,70 @@ async def reset(client: Client, message: Message):
         if FSUB and not await get_fsub(client, message):return
         is_reset = await chat_history.reset_history(message.from_user.id)
         if not is_reset:
-            return await message.reply_text("Unable to reset chat history.")
-        await message.reply_text("<b>Chat history has been reset.</b>")
+            return await message.reply_text("Unable to reset chat history.") # type:ignore
+        await message.reply_text("<b>Chat history has been reset.</b>") # type:ignore
     except Exception as e:
         print("Error in reset: ", e)
-        return await message.reply_text("Sorry, Failed to reset chat history.")
+        return await message.reply_text("Sorry, Failed to reset chat history.") # type:ignore
+
 
 @Client.on_message(filters.command("gen") & filters.private)  # type:ignore
 async def gen_image(client: Client, message: Message):
+    """
+    Handles private messages with the /gen command and generates an image based on the provided prompt.
+    
+    Args:
+        client (Client): The Client object.
+        message (Message): The Message object.
+
+    Returns:
+        None
+    """
     sticker = None
     try:
         await users.get_or_add_user(message.from_user.id, message.from_user.first_name)
         if FSUB and not await get_fsub(client, message):return
-        sticker = await message.reply_sticker(random.choice(STICKERS_IDS))
+        sticker = await message.reply_sticker(random.choice(STICKERS_IDS)) # type:ignore
         prompt = message.text.replace("/gen", "").strip()
         encoded_prompt = prompt.replace("\n", " ")
         if not prompt:
-            return await message.reply_text("Please provide a prompt.")
-        response = await cl.get(f"/image/?prompt={encoded_prompt}")
-        base64_image = response.json()["image"]
-        image_data = base64.b64decode(base64_image)
-        image_file = BytesIO(image_data)
-        await message.reply_photo(photo=image_file , caption=f"Generated Image for prompt: {prompt[:150]}...")
-        image_file.close() 
+            return await message.reply_text("Please provide a prompt.") # type:ignore
+        image_file = await create_image(encoded_prompt)
+        if not image_file:
+            return await message.reply_text("Failed to generate image.") # type:ignore
+        await message.reply_photo(photo=image_file , caption=f"Generated Image for prompt: {prompt[:150]}...") # type:ignore
+        image_file.close()
     except Exception as e:
         print("Error in gen_image: ", e)
-        return await message.reply_text("Sorry, I am not Available right now.")
+        return await message.reply_text("Sorry, I am not Available right now.") # type:ignore
     finally:
         if sticker:await sticker.delete()
 
 @Client.on_message(filters.text & filters.incoming & filters.private) # type:ignore
 async def ai_res(client: Client, message: Message ):
+    """
+    Handles private text messages and sends AI responses back.
+    """
     sticker = None
     reply = None
     try:
         await users.get_or_add_user(message.from_user.id, message.from_user.first_name)
         if FSUB and not await get_fsub(client, message):return
-        sticker = await message.reply_sticker(random.choice(STICKERS_IDS))
+        sticker = await message.reply_sticker(random.choice(STICKERS_IDS)) # type:ignore
         text = message.text
         if text.startswith('/'):
             return
         user_id = message.from_user.id
         history = await chat_history.get_history(user_id)
         history.append({"role": "user", "content": text})
-        response = await cl.post("/ai/", json=history , headers={"Content-Type": "application/json"}) 
-        response_json = response.json()
-        reply = response_json["response"]
+        reply = await get_ai_response(history)
         history.append({"role": "assistant", "content": reply})
-        await message.reply_text(reply)
+        await message.reply_text(reply) # type:ignore
         await chat_history.add_history(user_id, history)
     except Exception as e:
         print("Error in ai_res: ", e)
         reply = "Sorry, I am not available right now."
-        await message.reply_text(reply)
+        await message.reply_text(reply) # type:ignore
     finally:
         if sticker:
             await sticker.delete()

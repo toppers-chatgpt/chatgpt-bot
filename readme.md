@@ -7,6 +7,8 @@ Best thing is you don't need any API key to create this bot.
 
 ## Features
 
+- **Live Search**: Users can perform live searches directly through the bot and get summerized results.
+
 - **Private Chat**: Users can chat with the bot directly without using any commands. The bot stores up to the last 50 messages in the conversation, allowing for continuous, context-aware responses.
   
 - **Fast Responses**: The bot is optimized for speed, offering the most efficient and fast replies.
@@ -87,7 +89,7 @@ To set up the bot on your local machine, follow these steps:
 
 ### Commands
 
-- `/gen [prompt]`: Generate high-quality images using AI.
+- `/gen [prompt]`: Generate high-quality images using AI. 
 - `/ai [text]`: Use this command in group chats to interact with the bot.
 - `/broadcast`: Admins can broadcast a message to all users.
 - `/reset`: Reset the chat history.

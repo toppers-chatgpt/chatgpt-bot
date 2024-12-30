@@ -5,7 +5,7 @@ from info import *
 
 class Bot(Client):
     def __init__(self):
-        super().__init__(
+        super().__init__( # type:ignore
             name="Bisal Gptt",
             api_id=API_ID,
             api_hash=API_HASH,
@@ -15,13 +15,13 @@ class Bot(Client):
             sleep_threshold=15,
         )
 
-    async def start(self):
+    async def start(self): # type:ignore
         await super().start()
         me = await self.get_me()
         print(f"{me.first_name} Iꜱ Sᴛᴀʀᴛᴇᴅ.....✨️")
         await self.send_message(ADMIN, f"**__{me.first_name}  Iꜱ Sᴛᴀʀᴛᴇᴅ.....✨️__**")
-    async def stop(self, *args):
+    async def stop(self, *args): # type:ignore
         await super().stop()
         print("Bᴏᴛ Iꜱ Sᴛᴏᴘᴘᴇᴅ....")
 
-Bot().run()
+Bot().run() # type:ignore
