@@ -12,7 +12,7 @@ CHAT_GROUP = int(environ.get("CHAT_GROUP", "-1002382382079"))
 LOG_CHANNEL = environ.get("LOG_CHANNEL", "-1002415961135")
 MONGO_URL = environ.get("MONGO_URL" , "mongodb+srv://sujoy123m:wTWKGUaxYE7dxb1l@cluster0.zorxb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 AUTH_CHANNEL = int(
-    environ.get("AUTH_CHANNEL", "-1002253042763")
+    environ.get("AUTH_CHANNEL", "-1002328961993")
 )
 FSUB = environ.get("FSUB", True)
 STICKERS_IDS = (
