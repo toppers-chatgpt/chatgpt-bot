@@ -34,7 +34,7 @@ async def startcmd(client: Client, message: Message):
     ]]
     
     await message.reply_photo(# type:ignore
-        photo="https://telegra.ph/file/595e38a4d76848c01b110.jpg",
+        photo="https://ibb.co/z0HjrTG",
         caption=f"<b>Jai Shree Krishna {userMention},\n\nIᴍ Hᴇʀᴇ Tᴏ Rᴇᴅᴜᴄᴇ Yᴏᴜʀ Pʀᴏʙʟᴇᴍs..\nYᴏᴜ Cᴀɴ Usᴇ Mᴇ As ʏᴏᴜʀ Pʀɪᴠᴀᴛᴇ Assɪsᴛᴀɴᴛ..\nAsᴋ Mᴇ Aɴʏᴛʜɪɴɢ...Dɪʀᴇᴄᴛʟʏ..\n\nMʏ Cʀᴇᴀᴛᴏʀ : <a href=https://t.me/UncleChipssBot>Sᴜᴊᴏʏ 😎</a>\nMʏ Lᴏᴠᴇʀ : <a href=tg://settings/>Tʜɪs Pᴇʀsᴏɴ ❣️</a></b>",
         reply_markup=InlineKeyboardMarkup(main_buttons)
     ) 
