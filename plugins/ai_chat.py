@@ -26,6 +26,7 @@ async def startcmd(client: Client, message: Message):
     userMention = message.from_user.mention()
     if await users.get_user(message.from_user.id) is None:
         await users.addUser(message.from_user.id, message.from_user.first_name)
+        reply_markup = InlineKeyboardMarkup(main_buttons)
         await client.send_message(
             LOG_CHANNEL,
             text=f"#New_user_started\n\nUser: {message.from_user.mention()}\nid :{message.from_user.id}",
