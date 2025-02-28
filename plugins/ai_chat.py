@@ -30,7 +30,7 @@ async def startcmd(client: Client, message: Message):
 ],[
     InlineKeyboardButton('💝 sᴜʙsᴄʀɪʙᴇ ᴍʏ ʏᴏᴜᴛᴜʙᴇ ᴄʜᴀɴɴᴇʟ', url='https://youtube.com/@SuperToppers')
 ],[
-    InlineKeyboardButton('📊 ᴄʜᴇᴄᴋ ʙᴏᴛs ʟɪᴠᴇ sᴛᴀᴛᴜs', url='https://stats.uptimerobot.com/hbonvLjQFt/798657686')
+    InlineKeyboardButton('📊 ᴄʜᴇᴄᴋ ʙᴏᴛs ʟɪᴠᴇ sᴛᴀᴛᴜs', url='https://stats.uptimerobot.com/IcJLIkZBRJ/798672279')
     ]]
     
     await message.reply_photo(# type:ignore
