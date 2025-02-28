@@ -10,23 +10,11 @@ from plugins.utils import create_image, get_ai_response
 from .db import *
 from .fsub import get_fsub
 
-main_buttons = [[
-    InlineKeyboardButton('❣️ ᴅᴇᴠᴇʟᴏᴘᴇʀ ❣️', url='https://t.me/UncleChipssBot')
-],[
-    InlineKeyboardButton('🔍 sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ', url='https://t.me/SuperToppers0'),
-    InlineKeyboardButton('🤖 ᴜᴘᴅᴀᴛᴇ ɢʀᴏᴜᴘ', url='https://t.me/SuperToppers')
-],[
-    InlineKeyboardButton('💝 sᴜʙsᴄʀɪʙᴇ ᴍʏ ʏᴏᴜᴛᴜʙᴇ ᴄʜᴀɴɴᴇʟ', url='https://youtube.com/@SuperToppers')
-],[
-    InlineKeyboardButton('📊 ᴄʜᴇᴄᴋ ʙᴏᴛs ʟɪᴠᴇ sᴛᴀᴛᴜs', url='https://stats.uptimerobot.com/hbonvLjQFt/798657686')
-    ]]
-
 @Client.on_message(filters.command("start") & filters.incoming) # type:ignore
 async def startcmd(client: Client, message: Message):
     userMention = message.from_user.mention()
     if await users.get_user(message.from_user.id) is None:
         await users.addUser(message.from_user.id, message.from_user.first_name)
-        reply_markup = InlineKeyboardMarkup(main_buttons)
         await client.send_message(
             LOG_CHANNEL,
             text=f"#New_user_started\n\nUser: {message.from_user.mention()}\nid :{message.from_user.id}",
